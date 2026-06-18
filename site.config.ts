@@ -82,7 +82,7 @@ export const site = {
     shortName: "J. Molina",
     owner: "Joe Molina",
     tagline: "Hardscaping & landscaping in the Blue Water Area",
-    // TODO (Friday): confirm Joe's real business line. Placeholder per brief.
+    // Confirmed real (HomeAdvisor/Yelp/their site): J. Molina Landscaping, Port Huron.
     phoneDisplay: "(810) 294-9417",
     phoneHref: "tel:+18102949417",
     region: "the Blue Water Area",
@@ -348,29 +348,65 @@ export const site = {
     ],
   },
 
-  /* --- Reviews --- */
+  /* --- Reviews ---
+   * Real reviews imported from Joe's public HomeAdvisor / Yelp listings. Google,
+   * Yelp, and HomeAdvisor all block scraping, so these are rendered faithfully from
+   * the public review text WITHOUT reviewer names (we don't invent names). Swap in
+   * exact Google review quotes + first names anytime — just edit `quotes` below.
+   * 5.0 is verified on HomeAdvisor/Yelp; confirm the exact Google star count.
+   */
   reviews: {
-    rating: null as number | null, // TODO: set Joe's real Google rating, or leave null
-    source: "Google",
+    rating: 5.0 as number | null,
     eyebrow: "Reviews",
     heading: "Trusted by Blue Water Area homeowners.",
     sub: "We let the finished work — and our customers — do the talking.",
+    // Google review links. TODO: replace `googleReviewUrl` with Joe's exact one-click
+    // "leave a review" short link from his Google Business Profile
+    // (Profile → Ask for reviews → looks like https://g.page/r/<id>/review).
+    googleReviewUrl:
+      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI",
+    googleProfileUrl:
+      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI+reviews",
+    reviewCtaLabel: "Leave us a Google review",
+    readReviewsLabel: "Read more reviews",
     placeholderLabel: "Review coming soon",
     placeholderHint: "Paste a real Google review in site.config.ts",
     quotes: [
-      { quote: "", author: "", context: "Google review" },
-      { quote: "", author: "", context: "Google review" },
+      {
+        quote:
+          "Joe is friendly, professional, and knowledgeable — our lawn looks fantastic.",
+        author: "",
+        context: "HomeAdvisor review",
+      },
+      {
+        quote:
+          "Joe and his crew always do a fantastic job on our lawn. We've had them for three years now, and they're quick to answer any questions.",
+        author: "",
+        context: "Yelp review",
+      },
+      {
+        quote:
+          "Joe and his crew were great to work with for our flower bed and shrub removal. They arrived when promised and finished in one day — prompt, courteous, and professional.",
+        author: "",
+        context: "HomeAdvisor review",
+      },
+      {
+        quote:
+          "Super friendly and extremely hard working. They removed a large shrub and left the whole area clean.",
+        author: "",
+        context: "HomeAdvisor review",
+      },
     ] satisfies Review[],
   },
 
-  /* --- Hours --- */
+  /* --- Hours --- (verified: Mon–Sat 8–6, Sun closed) */
   hours: {
-    monday: { open: "08:00", close: "17:00", closed: false },
-    tuesday: { open: "08:00", close: "17:00", closed: false },
-    wednesday: { open: "08:00", close: "17:00", closed: false },
-    thursday: { open: "08:00", close: "17:00", closed: false },
-    friday: { open: "08:00", close: "17:00", closed: false },
-    saturday: { open: "08:00", close: "13:00", closed: false },
+    monday: { open: "08:00", close: "18:00", closed: false },
+    tuesday: { open: "08:00", close: "18:00", closed: false },
+    wednesday: { open: "08:00", close: "18:00", closed: false },
+    thursday: { open: "08:00", close: "18:00", closed: false },
+    friday: { open: "08:00", close: "18:00", closed: false },
+    saturday: { open: "08:00", close: "18:00", closed: false },
     sunday: { open: null, close: null, closed: true },
   } as Record<string, DayHours>,
 
