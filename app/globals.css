@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    scroll-behavior: smooth;
+  }
+
+  /* Anchor links land below the sticky header, not under it. */
+  section[id] {
+    scroll-margin-top: 84px;
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: #a85f2a;
+    color: #fbfaf6;
+  }
+
+  /* Visible keyboard focus everywhere — never remove the outline silently. */
+  :focus-visible {
+    outline: 2px solid #a85f2a;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* Respect reduced-motion: kill smooth scroll + animations + transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-page px-5 sm:px-8;
+  }
+
+  /* Small tracked label — cedar on light, set in the body grotesque. */
+  .eyebrow {
+    @apply font-body text-xs font-semibold uppercase tracking-[0.2em] text-cedar-dark;
+  }
+
+  /* Display headings — Fraunces, set heavy + tight so it reads sturdy and crafted,
+   * not delicate-fashion. The "established family company" voice. */
+  .h-display {
+    @apply font-display font-semibold leading-[1.05] tracking-[-0.015em];
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-body text-sm font-semibold transition-colors duration-200 focus-visible:outline-offset-4;
+  }
+
+  /* Primary CTA — warm cedar, bone text (white-on-cedar ≈ 4.8:1, passes AA). */
+  .btn-primary {
+    @apply btn bg-cedar px-6 py-3.5 text-bone hover:bg-cedar-dark;
+  }
+
+  /* Deep evergreen action — very high contrast, grounded. */
+  .btn-dark {
+    @apply btn bg-evergreen px-6 py-3.5 text-bone hover:bg-evergreen-light;
+  }
+
+  /* Outline button for use on dark/photographic backgrounds. */
+  .btn-ghost {
+    @apply btn border border-bone/40 bg-transparent px-6 py-3.5 text-bone hover:border-bone/70 hover:bg-bone/10;
+  }
+
+  /* Outline button on light surfaces. */
+  .btn-outline {
+    @apply btn border border-evergreen/25 bg-transparent px-6 py-3.5 text-evergreen hover:border-evergreen/60 hover:bg-evergreen/5;
+  }
+
+  /* The signature motif: a chiseled "stone seam" — a thin band of stacked-ashlar
+   * rectangles, like a dry-laid wall course. Used as a section divider + accent. */
+  .stone-seam {
+    height: 6px;
+    width: 100%;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #233a2e 0 22px,
+      #33523f 22px 24px
+    );
+    opacity: 0.92;
+  }
+
+  /* Faint ashlar texture for light section backgrounds — barely-there stone courses. */
+  .ashlar-wash {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(28, 32, 27, 0.035) 0 1px, transparent 1px 64px),
+      repeating-linear-gradient(90deg, rgba(28, 32, 27, 0.03) 0 1px, transparent 1px 96px);
+    background-position: 0 0, 0 0;
+  }
+
+  /* Photographic scrim — keeps headline text legible over hero/work imagery. */
+  .photo-scrim {
+    background-image: linear-gradient(
+      180deg,
+      rgba(16, 28, 21, 0.2) 0%,
+      rgba(16, 28, 21, 0.55) 55%,
+      rgba(16, 28, 21, 0.85) 100%
+    );
+  }
+}
