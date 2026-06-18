@@ -1,6 +1,9 @@
+import Link from "next/link";
 import { Phone, MapPin } from "lucide-react";
 import { site } from "@/site.config";
 import { DAY_ORDER, dayLabel, formatDayHours } from "@/lib/format";
+
+const footerNav = [{ label: "Home", href: "/" }, ...site.nav];
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -13,10 +16,10 @@ export default function Footer() {
         <div className="grid gap-10 lg:grid-cols-4">
           {/* Brand + contact */}
           <div className="lg:col-span-2">
-            <div className="h-display text-2xl text-bone">
+            <Link href="/" className="h-display text-2xl text-bone">
               {site.business.name}
               <span className="text-cedar">.</span>
-            </div>
+            </Link>
             <p className="mt-3 max-w-xs text-sm text-bone/60">
               {site.footer.blurb}
             </p>
@@ -39,14 +42,14 @@ export default function Footer() {
               {site.footer.exploreLabel}
             </h2>
             <ul className="mt-2 space-y-1">
-              {site.nav.map((item) => (
+              {footerNav.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="inline-flex min-h-[44px] items-center text-sm text-bone/75 transition-colors hover:text-bone"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -77,7 +80,18 @@ export default function Footer() {
           <p>
             © {year} {site.business.name}. {site.footer.rightsText}
           </p>
-          <p>{site.footer.credit}</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            {site.footer.legal.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="transition-colors hover:text-bone"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <span className="text-bone/40">{site.footer.credit}</span>
+          </div>
         </div>
       </div>
     </footer>

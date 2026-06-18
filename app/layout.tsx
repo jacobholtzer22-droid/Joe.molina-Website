@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Libre_Franklin } from "next/font/google";
 import { site } from "@/site.config";
+import { pageMetadata } from "@/lib/seo";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import MobileCtaBar from "@/components/MobileCtaBar";
 import "./globals.css";
 
 /* Display: Fraunces — an "old-style" optical serif with real character. Set heavy and
@@ -22,18 +26,11 @@ const body = Libre_Franklin({
   display: "swap",
 });
 
+// Default metadata = home page. Each route overrides via its own pageMetadata().
 export const metadata: Metadata = {
   metadataBase: new URL(site.seo.url),
-  title: site.seo.title,
-  description: site.seo.description,
-  openGraph: {
-    title: site.seo.title,
-    description: site.seo.description,
-    url: site.seo.url,
-    siteName: site.business.name,
-    type: "website",
-  },
   robots: { index: true, follow: true },
+  ...pageMetadata("home"),
 };
 
 export const viewport: Viewport = {
@@ -48,7 +45,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="bg-limestone font-body text-ink antialiased">
-        {children}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-cedar focus:px-4 focus:py-2 focus:font-semibold focus:text-bone"
+        >
+          Skip to content
+        </a>
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+        <MobileCtaBar />
       </body>
     </html>
   );

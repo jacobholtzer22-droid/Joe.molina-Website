@@ -1,12 +1,48 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Section from "./Section";
 import ImagePlaceholder from "./ImagePlaceholder";
 import { site } from "@/site.config";
 
-export default function Services() {
+type ServiceItem = (typeof site.services)[number];
+
+function ServiceCard({ service }: { service: ServiceItem }) {
+  const Icon = service.icon;
+  return (
+    <li>
+      <Link
+        href={`/services/${service.slug}`}
+        className="group flex h-full flex-col gap-4 bg-bone p-7 transition-colors hover:bg-limestone-deep"
+      >
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-evergreen text-bone">
+          <Icon className="h-6 w-6" aria-hidden="true" />
+        </span>
+        <h3 className="font-display text-lg font-semibold tracking-tight text-evergreen">
+          {service.title}
+        </h3>
+        <p className="text-[15px] leading-relaxed text-ink/65">
+          {service.description}
+        </p>
+        <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-semibold text-cedar-dark">
+          Learn more
+          <ArrowRight
+            className="h-4 w-4 transition-transform group-hover:translate-x-1"
+            aria-hidden="true"
+          />
+        </span>
+      </Link>
+    </li>
+  );
+}
+
+/**
+ * Services overview. `compact` (home) = intro + card grid + "all services" link.
+ * Full (/services) = intro + hardscaping feature block + remaining cards + CTA.
+ */
+export default function Services({ compact = false }: { compact?: boolean }) {
   const { servicesIntro, services, cta } = site;
-  const featured = services.find((s) => s.image);
-  const rest = services.filter((s) => !s.image);
+  const featured = services.find((s) => s.featured);
+  const rest = services.filter((s) => !s.featured);
 
   return (
     <Section id="services" tone="stone" className="ashlar-wash">
@@ -18,12 +54,12 @@ export default function Services() {
         <p className="mt-4 text-lg text-ink/70">{servicesIntro.sub}</p>
       </div>
 
-      {/* Featured service — hardscaping leads */}
-      {featured && (
+      {/* Featured service feature block — only on the full /services page. */}
+      {!compact && featured && (
         <div className="mt-12 grid items-stretch gap-8 overflow-hidden rounded-2xl border border-evergreen/10 bg-bone lg:grid-cols-2">
           <div className="relative min-h-[20rem] lg:min-h-[26rem]">
             <ImagePlaceholder
-              image={featured.image!}
+              image={featured.image}
               sizes="(min-width: 1024px) 600px, 100vw"
             />
           </div>
@@ -36,49 +72,45 @@ export default function Services() {
               {featured.title}
             </h3>
             <p className="mt-4 text-base leading-relaxed text-ink/70">
-              {featured.description}
+              {featured.intro}
             </p>
-            <a
-              href="#work"
+            <Link
+              href={`/services/${featured.slug}`}
               className="group mt-7 inline-flex w-fit items-center gap-2 font-semibold text-cedar-dark hover:text-cedar"
             >
-              See finished projects
+              Explore hardscaping
               <ArrowRight
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 aria-hidden="true"
               />
-            </a>
+            </Link>
           </div>
         </div>
       )}
 
-      {/* The rest — icon cards */}
-      <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-evergreen/10 bg-evergreen/10 sm:grid-cols-2 lg:grid-cols-4">
-        {rest.map((service) => {
-          const Icon = service.icon;
-          return (
-            <li
-              key={service.title}
-              className="flex flex-col gap-4 bg-bone p-7 transition-colors hover:bg-limestone-deep"
-            >
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-evergreen text-bone">
-                <Icon className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <h3 className="font-display text-lg font-semibold tracking-tight text-evergreen">
-                {service.title}
-              </h3>
-              <p className="text-[15px] leading-relaxed text-ink/65">
-                {service.description}
-              </p>
-            </li>
-          );
-        })}
+      {/* Card grid. Compact shows every service; full shows the non-featured ones. */}
+      <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {(compact ? services : rest).map((service) => (
+          <ServiceCard key={service.slug} service={service} />
+        ))}
       </ul>
 
-      <div className="mt-10">
-        <a href="#contact" className="btn-dark px-7 py-4 text-base">
+      <div className="mt-10 flex flex-wrap items-center gap-4">
+        <Link href={cta.href} className="btn-dark px-7 py-4 text-base">
           {cta.label}
-        </a>
+        </Link>
+        {compact && (
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-2 font-semibold text-cedar-dark hover:text-cedar"
+          >
+            {servicesIntro.allLabel}
+            <ArrowRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
+          </Link>
+        )}
       </div>
     </Section>
   );

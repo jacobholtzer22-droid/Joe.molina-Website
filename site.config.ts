@@ -1,13 +1,16 @@
 /* =============================================================================
  * site.config.ts — SINGLE SOURCE OF TRUTH
  * -----------------------------------------------------------------------------
- * This is the ONLY file with business-specific content. Every component reads
- * from here — no business detail is hardcoded anywhere else. To spin up a
+ * This is the ONLY file with business-specific content. Every component/page
+ * reads from here — no business detail is hardcoded anywhere else. To spin up a
  * different client site on this exact codebase:
  *   1. Replace the values in this file.
  *   2. Drop new photos in /public/images and update `images` + `work` below.
  *   3. Swap the brand colors in tailwind.config.ts + the fonts in app/layout.tsx.
  * That's it — zero component edits.
+ *
+ * Multi-page: real routes (/, /services, /services/<slug>, /gallery, /about,
+ * /contact, /privacy-policy, /terms). Per-page SEO lives in `seo.pages`.
  * ========================================================================== */
 
 import type { LucideIcon } from "lucide-react";
@@ -26,10 +29,19 @@ export type SiteImage = {
 
 export type Service = {
   title: string;
+  /** URL segment for the sub-page: /services/<slug> */
+  slug: string;
+  /** Short card description (home + services index). */
   description: string;
   icon: LucideIcon;
-  /** A service WITH an image renders as the large feature block; the rest are icon cards. */
-  image?: SiteImage;
+  /** Hardscaping leads — rendered as the large feature block on /services. */
+  featured?: boolean;
+  /** Photo for the feature block + the service sub-page hero. */
+  image: SiteImage;
+  /** Sub-page lead paragraph. */
+  intro: string;
+  /** Sub-page "what's included" bullets. */
+  bullets: string[];
 };
 
 export type Project = {
@@ -42,14 +54,12 @@ export type Review = {
   /** Leave quote empty ("") to render a clearly-marked placeholder slot — never invent. */
   quote: string;
   author: string;
-  /** e.g. "Google review" — shown under the author. */
   context?: string;
 };
 
 export type Stat = { value: string; label: string };
 
 export type DayHours = {
-  /** 24h "HH:MM", or null when closed. */
   open: string | null;
   close: string | null;
   closed: boolean;
@@ -57,7 +67,6 @@ export type DayHours = {
 
 export type NavItem = { label: string; href: string };
 
-/** A before/after pair for the (config-gated) comparison slider. */
 export type BeforeAfterPair = {
   before: SiteImage;
   after: SiteImage;
@@ -80,29 +89,26 @@ export const site = {
     email: "", // optional — add a public contact email if Joe wants one shown
   },
 
-  /* --- Shared microcopy (buttons used in more than one place) --- */
+  /* --- Shared CTA (one place; used in header, mobile bar, bands) --- */
   cta: {
-    label: "Free in-home consultation", // header / sections
-    short: "Free consultation", // mobile cta bar
+    label: "Free quote", // header button / sections
+    short: "Free quote", // mobile cta bar
     callShort: "Call", // mobile header button
+    href: "/contact", // the quote form lives on /contact
   },
 
-  /* --- Hero (split layout: copy + a tall finished-project photo) --- */
+  /* --- Hero (home, split layout: copy + a tall finished-project photo) --- */
   hero: {
     eyebrow: "Family-owned · Blue Water Area · 10+ years",
-    // "\n" controls the line breaks in the display headline.
     headline: "Landscapes built\nto last a lifetime.",
     sub: "For over a decade, the Molina family has designed and built the patios, walls, walkways, and grounds that make Blue Water Area homes the ones people slow down to look at. Real craftsmanship — work you can stand on.",
-    primaryCta: "Get a free in-home consultation",
+    primaryCta: "Get a free quote",
     secondaryCtaLabel: "Call Joe",
     imageKey: "hero" as const,
     imageBadge: "10+ years of finished work",
   },
 
-  /* --- Trust strip (under the hero) ---
-   * rating = null hides any star number (honest until Joe's real Google rating
-   * is confirmed). Set a number to show stars + "X.X on Google".
-   */
+  /* --- Trust strip (under the hero) --- */
   trust: {
     rating: null as number | null, // TODO: set Joe's real Google rating, or leave null
     ratingSource: "Google",
@@ -110,66 +116,134 @@ export const site = {
       "Family-owned & operated",
       "10+ years in the Blue Water Area",
       "Hardscaping & stonework specialists",
-      "Free, no-pressure consultations",
+      "Free, no-pressure quotes",
     ],
   },
 
   /* --- Services intro + cards ---
-   * The first service carries an `image` and renders as the large feature block —
-   * hardscaping leads, because it's what they're known for.
+   * The service with `featured: true` renders as the large feature block on /services.
+   * Each service is also its own page at /services/<slug>.
    */
   servicesIntro: {
     eyebrow: "What we do",
     heading: "From the ground up — and the stone down.",
     sub: "Whether it's a full hardscape build or keeping an established property sharp, the same family crew handles it start to finish.",
+    allLabel: "All services",
   },
   services: [
     {
       title: "Hardscaping & Stonework",
+      slug: "hardscaping",
       description:
-        "Our craft. Retaining walls, paver patios, walkways, steps, and natural stonework — engineered to drain right, sit level, and hold their lines for decades. This is the work the Molina name is built on.",
+        "Retaining walls, paver patios, walkways, and natural stonework — engineered to last. The work the Molina name is built on.",
       icon: Hammer,
+      featured: true,
       image: {
         src: "/images/service-hardscape.jpg",
         alt: "Curved interlocking-paver walkway leading to a home's entrance, bordered by fresh mulch beds and a stone fountain, built by J. Molina Landscaping",
-        placeholderLabel: "Hardscaping feature — finished paver walkway & beds",
+        placeholderLabel: "Hardscaping — finished paver walkway & beds",
       },
+      intro:
+        "Hardscaping is our craft. We design and build the hard surfaces that give a property its structure and stand up to Michigan winters — patios you'll actually use, walls that hold their line, and walkways that sit dead level for decades.",
+      bullets: [
+        "Paver & natural-stone patios",
+        "Retaining & garden walls",
+        "Walkways, steps & entries",
+        "Proper base prep, drainage & grading",
+        "Decorative stone & edging",
+      ],
     },
     {
       title: "Lawn Maintenance",
+      slug: "lawn-maintenance",
       description:
-        "Weekly mowing, clean edges, and trimming that keeps an established property looking cared for — because it is. Sharp lines every visit.",
+        "Weekly mowing, clean edges, and trimming that keeps an established property looking cared for — sharp lines every visit.",
       icon: Sprout,
+      image: {
+        src: "/images/work-striped-lawn.jpg",
+        alt: "Two-story home with a freshly mowed, striped green lawn maintained by J. Molina Landscaping",
+        placeholderLabel: "Lawn maintenance — striped lawn",
+      },
+      intro:
+        "A well-kept lawn is the easiest way to make a property look cared for. We mow on a schedule that fits your yard, handle the clippings, and leave crisp edges every single visit.",
+      bullets: [
+        "Weekly & biweekly mowing",
+        "Edging along walks, drives & beds",
+        "String-trimming around fences & trees",
+        "Clippings cleaned up, never left behind",
+      ],
     },
     {
       title: "Spring & Fall Cleanups",
+      slug: "spring-fall-cleanups",
       description:
         "Leaves, beds, and winter mess cleared out so the property starts each season healthy and looks ready instead of buried.",
       icon: Leaf,
+      image: {
+        src: "/images/work-fall-cleanup.jpg",
+        alt: "Backyard with autumn leaves cleared from the lawn beside a detached shed during a fall cleanup",
+        placeholderLabel: "Seasonal cleanups — fall yard cleanup",
+      },
+      intro:
+        "The change of seasons is when a property either gets ahead or falls behind. We clear out the leaves, sticks, and winter debris so your lawn starts healthy and your beds look ready, not buried.",
+      bullets: [
+        "Leaf & debris removal",
+        "Bed cleanouts & cutbacks",
+        "Gutter-line & hardscape clearing",
+        "Hauled away, left clean",
+      ],
     },
     {
       title: "Mulch & Stone Install",
+      slug: "mulch-stone-install",
       description:
         "Fresh mulch, decorative stone, and crisp bed borders that lock in moisture, hold back weeds, and frame the whole yard.",
       icon: Mountain,
+      image: {
+        src: "/images/work-fence-border.jpg",
+        alt: "Backyard corner with a wood privacy fence, tidy lawn, and a clean gravel and stone border strip",
+        placeholderLabel: "Mulch & stone — clean stone border",
+      },
+      intro:
+        "Fresh mulch and decorative stone do more than look good — they lock in moisture, hold back weeds, and frame the whole property. We install it clean, with borders that hold their shape.",
+      bullets: [
+        "Hardwood & dyed mulch",
+        "Decorative & drainage stone",
+        "Crisp bed edging & borders",
+        "Weed barrier where it makes sense",
+      ],
     },
     {
       title: "General Landscaping",
+      slug: "general-landscaping",
       description:
         "Bed design, plantings, grading, and the finishing touches that turn a plain lot into grounds that fit the home.",
       icon: TreePine,
+      image: {
+        src: "/images/hero.jpg",
+        alt: "Brick ranch home with a curved paver walkway, stone fountain, and shaped evergreen beds installed by J. Molina Landscaping",
+        placeholderLabel: "General landscaping — designed front grounds",
+      },
+      intro:
+        "When you want the whole property to come together, we handle the design and the dirt — bed layout, plantings, grading, and the finishing touches that make grounds feel like they belong with the home.",
+      bullets: [
+        "Bed design & shaping",
+        "Shrub & perennial plantings",
+        "Grading & soil work",
+        "Full-property finishing touches",
+      ],
     },
   ] satisfies Service[],
 
-  /* --- The Work (signature: finished-project gallery) ---
-   * The first project renders large/featured; the rest fill the grid. Hardscaping
-   * is portfolio-driven — finished installs are the proof people want to see.
-   */
+  /* --- The Work (finished-project gallery) --- */
   work: {
     eyebrow: "The work",
     heading: "See what we've built.",
     sub: "A look at recent installs and maintained properties across the Blue Water Area. The finished work speaks for itself.",
-    cta: "Start your project",
+    teaserCta: "View the full gallery",
+    footerNote:
+      "Every project starts with a free, no-pressure quote — let's talk about what you're picturing.",
+    cta: "Get a free quote",
     projects: [
       {
         image: {
@@ -228,13 +302,7 @@ export const site = {
     ] satisfies Project[],
   },
 
-  /* --- Before/after slider (SIGNATURE, but config-gated) ---
-   * The component renders ONLY when enabled === true AND there is at least one pair
-   * with both images. Off by default: Joe's current photos are single finished shots,
-   * not matched before/after pairs — never fake a transformation. When he sends true
-   * pairs (same angle, before + after), drop them in /public/images, add a pair here,
-   * and flip enabled to true. The slider is already built and wired in page.tsx.
-   */
+  /* --- Before/after slider (config-gated; off until Joe sends real pairs) --- */
   beforeAfter: {
     enabled: false,
     eyebrow: "Before & after",
@@ -280,11 +348,7 @@ export const site = {
     ],
   },
 
-  /* --- Reviews / social proof ---
-   * Quotes are intentionally EMPTY placeholders — do not invent. Paste 2 real
-   * review quotes + author first names when Joe provides them. rating = null
-   * keeps the section honest (no star number) until a real rating is confirmed.
-   */
+  /* --- Reviews --- */
   reviews: {
     rating: null as number | null, // TODO: set Joe's real Google rating, or leave null
     source: "Google",
@@ -299,9 +363,7 @@ export const site = {
     ] satisfies Review[],
   },
 
-  /* --- Hours ---
-   * TODO (Friday): confirm Joe's real hours. Seeded with typical landscaping hours.
-   */
+  /* --- Hours --- */
   hours: {
     monday: { open: "08:00", close: "17:00", closed: false },
     tuesday: { open: "08:00", close: "17:00", closed: false },
@@ -312,11 +374,7 @@ export const site = {
     sunday: { open: null, close: null, closed: true },
   } as Record<string, DayHours>,
 
-  /* --- Photo manifest ---
-   * Maps each non-gallery photo to a role. Set `src` once the real file is in
-   * /public/images. While `src` is "", the site shows a labeled placeholder — no
-   * component edits needed. Gallery photos live under `work.projects`. See PHOTOS.md.
-   */
+  /* --- Photo manifest (non-gallery roles) --- */
   images: {
     hero: {
       src: "/images/hero.jpg",
@@ -330,9 +388,7 @@ export const site = {
     },
   } satisfies Record<string, SiteImage>,
 
-  /* --- CRM wiring (do not improvise — see ContactForm.tsx) ---
-   * Values come from env so a different deploy = different tenant, no code change.
-   */
+  /* --- CRM wiring (do not improvise — see ContactForm.tsx) --- */
   crm: {
     url:
       process.env.NEXT_PUBLIC_CRM_URL ||
@@ -340,14 +396,14 @@ export const site = {
     businessSlug: process.env.NEXT_PUBLIC_BUSINESS_SLUG || "REPLACE_ME_FRIDAY",
   },
 
-  /* --- Contact section + form copy --- */
+  /* --- Contact / quote copy --- */
   contact: {
-    eyebrow: "Free consultation",
-    heading: "Book your free in-home consultation.",
-    sub: "Tell us about your property and what you're picturing — patio, wall, full landscape, or just keeping it sharp. Joe will come out, walk it with you, and put together an honest quote. No pressure, no obligation.",
+    eyebrow: "Free quote",
+    heading: "Get your free quote.",
+    sub: "Tell us about your property and what you're picturing — a patio, wall, full landscape, or just keeping it sharp. Joe will take a look and put together an honest, no-pressure quote.",
     callOrTextLabel: "Call or text",
     infoLines: [
-      "We'll reach out to schedule a time that works for you.",
+      "We'll reach out to schedule a time to see the property and price it out.",
       "Hardscape projects book out in advance — the sooner you reach out, the sooner you're on the calendar.",
     ],
     form: {
@@ -361,35 +417,31 @@ export const site = {
       messageLabel: "What can we help with?",
       messagePlaceholder:
         "Your address and what you're looking for — a paver patio, retaining wall, full landscape, weekly maintenance, or something else.",
-      submitLabel: "Request my free consultation",
+      submitLabel: "Request my free quote",
       submittingLabel: "Sending…",
     },
     consentLabel:
       "I agree to receive text messages from J. Molina Landscaping about my request. Message and data rates may apply. Reply STOP to opt out.",
     successHeading: "Thanks — we've got it.",
     successBody:
-      "Joe will reach out shortly to set up your free in-home consultation. Need it sooner? Call or text us directly.",
+      "Joe will reach out shortly about your free quote. Need it sooner? Call or text us directly.",
     errorLead: "Something went wrong sending that. Please call or text us at",
   },
 
-  /* --- Nav (anchor links on a single page) --- */
-  nav: [
-    { label: "Services", href: "#services" },
-    { label: "The Work", href: "#work" },
-    { label: "Why Us", href: "#why-us" },
-    { label: "Service Area", href: "#service-area" },
-    { label: "Reviews", href: "#reviews" },
-    { label: "Contact", href: "#contact" },
-  ] satisfies NavItem[],
-
-  /* --- SEO --- */
-  seo: {
-    title:
-      "J. Molina Landscaping — Hardscaping & Landscaping in the Blue Water Area",
-    description:
-      "Family-owned hardscaping and landscaping in Port Huron, Marysville, Fort Gratiot, St. Clair and the Blue Water Area. Paver patios, retaining walls, stonework, lawn care, and cleanups — 10+ years of craftsmanship. Free in-home consultations.",
-    url: "https://jmolinalandscaping.com", // TODO: confirm final domain
+  /* --- Closing CTA band (bottom of most pages) --- */
+  ctaBand: {
+    heading: "Ready to build something that lasts?",
+    sub: "Tell us about your property and we'll put together a free, no-pressure quote.",
   },
+
+  /* --- Top-level nav (real routes). Services renders as a dropdown built from
+   * `services` in the Header. --- */
+  nav: [
+    { label: "Services", href: "/services" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
+  ] satisfies NavItem[],
 
   /* --- Footer --- */
   footer: {
@@ -399,6 +451,61 @@ export const site = {
     rightsText: "All rights reserved.",
     blurb:
       "Family-owned hardscaping and landscaping, built on craftsmanship and a name we stand behind.",
+    legal: [
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms", href: "/terms" },
+    ] satisfies NavItem[],
+  },
+
+  /* --- SEO --- *
+   * `url` is the production origin (metadataBase). Per-page metadata in `pages`. */
+  seo: {
+    url: "https://jmolinalandscaping.com", // TODO: confirm final domain
+    siteName: "J. Molina Landscaping",
+    pages: {
+      home: {
+        path: "/",
+        title:
+          "J. Molina Landscaping — Hardscaping & Landscaping in the Blue Water Area",
+        description:
+          "Family-owned hardscaping and landscaping in Port Huron, Marysville, Fort Gratiot, St. Clair and the Blue Water Area. Paver patios, retaining walls, stonework, lawn care, and cleanups — 10+ years of craftsmanship. Free quotes.",
+      },
+      services: {
+        path: "/services",
+        title: "Services — Hardscaping, Lawn Care & Landscaping | J. Molina Landscaping",
+        description:
+          "Hardscaping and stonework, lawn maintenance, seasonal cleanups, mulch & stone install, and full landscaping across the Blue Water Area. Free quotes from a family-owned crew.",
+      },
+      gallery: {
+        path: "/gallery",
+        title: "Project Gallery — Finished Hardscaping & Landscaping | J. Molina Landscaping",
+        description:
+          "See recent paver walkways, stonework, decks, and maintained properties built by J. Molina Landscaping across the Blue Water Area, Michigan.",
+      },
+      about: {
+        path: "/about",
+        title: "About — Family-Owned for 10+ Years | J. Molina Landscaping",
+        description:
+          "J. Molina Landscaping is a family-owned, owner-run hardscaping and landscaping company serving the Blue Water Area for over a decade. Meet the crew behind the work.",
+      },
+      contact: {
+        path: "/contact",
+        title: "Get a Free Quote | J. Molina Landscaping",
+        description:
+          "Request a free, no-pressure quote from J. Molina Landscaping. Hardscaping, lawn care, and landscaping in Port Huron and the Blue Water Area, Michigan.",
+      },
+      privacy: {
+        path: "/privacy-policy",
+        title: "Privacy Policy | J. Molina Landscaping",
+        description:
+          "How J. Molina Landscaping handles the information you share through this website.",
+      },
+      terms: {
+        path: "/terms",
+        title: "Terms of Service | J. Molina Landscaping",
+        description: "The terms for using the J. Molina Landscaping website.",
+      },
+    },
   },
 } as const;
 
