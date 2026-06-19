@@ -360,21 +360,25 @@ export const site = {
     eyebrow: "Reviews",
     heading: "Trusted by Blue Water Area homeowners.",
     sub: "We let the finished work — and our customers — do the talking.",
-    // Google review links. TODO: replace `googleReviewUrl` with Joe's exact one-click
-    // "leave a review" short link from his Google Business Profile
-    // (Profile → Ask for reviews → looks like https://g.page/r/<id>/review).
+    // Google review links — precise deep links to Joe's exact listing (name + city +
+    // zip). `googleReviewUrl` opens the Google Business panel where the "Write a review"
+    // button lives; `googleProfileUrl` opens the listing's reviews in Maps. For a true
+    // one-tap write-review link, paste the GBP short link (g.page/r/<id>/review) here —
+    // it isn't programmatically extractable (Google Maps blocks scraping).
     googleReviewUrl:
-      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI",
+      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI+48060",
     googleProfileUrl:
-      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI+reviews",
+      "https://www.google.com/maps/search/?api=1&query=J.+Molina+Landscaping+Port+Huron+MI+48060",
     reviewCtaLabel: "Leave us a Google review",
-    readReviewsLabel: "Read more reviews",
+    readReviewsLabel: "Read our reviews",
     placeholderLabel: "Review coming soon",
     placeholderHint: "Paste a real Google review in site.config.ts",
+    // Verbatim from Joe's public listings. No invented names (the platforms don't expose
+    // reviewer names to scraping); attributed to the source instead.
     quotes: [
       {
         quote:
-          "Joe is friendly, professional, and knowledgeable — our lawn looks fantastic.",
+          "Joe is friendly, professional and knowledgeable. My lawn looks fantastic! I'm so happy I found this service. I highly recommend J Molina.",
         author: "",
         context: "HomeAdvisor review",
       },
@@ -386,13 +390,13 @@ export const site = {
       },
       {
         quote:
-          "Joe and his crew were great to work with for our flower bed and shrub removal. They arrived when promised and finished in one day — prompt, courteous, and professional.",
+          "Joe and crew were great to work with! I called them to have some flower beds and shrubs removed. They arrived when promised and finished the work in one day. Prompt, courteous, and professional all the way!",
         author: "",
         context: "HomeAdvisor review",
       },
       {
         quote:
-          "Super friendly and extremely hard working. They removed a large shrub and left the whole area clean.",
+          "Super friendly and extremely hard working! Mr. Molina removed a large shrub that was encroaching on the neighbor's gate, and left the area very clean and ready to be reworked. Definitely hiring him again!",
         author: "",
         context: "HomeAdvisor review",
       },
