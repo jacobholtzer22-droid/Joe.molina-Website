@@ -6,8 +6,54 @@ import { site } from "@/site.config";
 
 type ServiceItem = (typeof site.services)[number];
 
-function ServiceCard({ service }: { service: ServiceItem }) {
+function ServiceCard({
+  service,
+  photo = false,
+}: {
+  service: ServiceItem;
+  photo?: boolean;
+}) {
   const Icon = service.icon;
+
+  // Photo card (used on the /services page): image on top, icon badge, copy below.
+  if (photo) {
+    return (
+      <li>
+        <Link
+          href={`/services/${service.slug}`}
+          className="group flex h-full flex-col overflow-hidden rounded-2xl border border-evergreen/10 bg-bone transition-shadow hover:shadow-lg"
+        >
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <ImagePlaceholder
+              image={service.image}
+              sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+              className="transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            />
+            <span className="absolute bottom-3 left-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-evergreen text-bone shadow-md">
+              <Icon className="h-5 w-5" aria-hidden="true" />
+            </span>
+          </div>
+          <div className="flex flex-1 flex-col gap-3 p-6">
+            <h3 className="font-display text-lg font-semibold tracking-tight text-evergreen">
+              {service.title}
+            </h3>
+            <p className="text-[15px] leading-relaxed text-ink/65">
+              {service.description}
+            </p>
+            <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-semibold text-cedar-dark">
+              Learn more
+              <ArrowRight
+                className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </span>
+          </div>
+        </Link>
+      </li>
+    );
+  }
+
+  // Icon card (used on the home teaser grid).
   return (
     <li>
       <Link
@@ -91,7 +137,7 @@ export default function Services({ compact = false }: { compact?: boolean }) {
       {/* Card grid. Compact shows every service; full shows the non-featured ones. */}
       <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {(compact ? services : rest).map((service) => (
-          <ServiceCard key={service.slug} service={service} />
+          <ServiceCard key={service.slug} service={service} photo={!compact} />
         ))}
       </ul>
 
