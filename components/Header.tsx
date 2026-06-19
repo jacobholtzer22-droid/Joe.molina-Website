@@ -82,6 +82,15 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+          <Link
+            href="/"
+            aria-current={isActive("/") ? "page" : undefined}
+            className={`text-sm font-medium transition-colors ${
+              isActive("/") ? linkActive : link
+            }`}
+          >
+            Home
+          </Link>
           {/* Services dropdown */}
           <div
             ref={svcRef}
@@ -187,6 +196,16 @@ export default function Header() {
           className="border-t border-bone/10 bg-evergreen lg:hidden"
         >
           <div className="container-page flex flex-col py-3">
+            <Link
+              href="/"
+              onClick={closeMobile}
+              aria-current={isActive("/") ? "page" : undefined}
+              className={`border-b border-bone/5 py-3 text-base font-medium transition-colors ${
+                isActive("/") ? "text-bone" : "text-bone/80 hover:text-bone"
+              }`}
+            >
+              Home
+            </Link>
             {/* Services accordion */}
             <button
               type="button"
