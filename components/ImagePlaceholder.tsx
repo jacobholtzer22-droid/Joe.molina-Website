@@ -15,7 +15,7 @@ type Props = {
   /**
    * Where the placeholder label sits.
    * 'center' (default) for self-contained image boxes.
-   * 'top' for full-bleed heroes — keeps the label out of the headline/copy zone.
+   * 'top' for full-bleed heroes, keeps the label out of the headline/copy zone.
    */
   align?: "center" | "top";
 };
@@ -23,7 +23,7 @@ type Props = {
 /**
  * Renders the real photo once `image.src` is set in the config manifest.
  * Until then, renders a labeled placeholder so it's obvious which photo goes
- * where — drop the file in /public/images, set the src in site.config.ts, done.
+ * where, drop the file in /public/images, set the src in site.config.ts, done.
  */
 export default function ImagePlaceholder({
   image,
@@ -61,7 +61,7 @@ export default function ImagePlaceholder({
       }}
     >
       {isTop ? (
-        /* Compact pill near the top — never overlaps the bottom-anchored hero copy. */
+        /* Compact pill near the top, never overlaps the bottom-anchored hero copy. */
         <span className="inline-flex items-center gap-2 rounded-full bg-ink/55 px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider text-bone/70 backdrop-blur-sm">
           <ImageOff className="h-4 w-4 shrink-0" aria-hidden="true" />
           {image.placeholderLabel}

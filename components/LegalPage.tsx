@@ -4,7 +4,7 @@ export type LegalSection = { heading: string; body: string[] };
 
 /**
  * Shared layout for the Privacy Policy / Terms pages. Plain, readable prose on the
- * light base. Content is passed in per page. NOTE: this is standard boilerplate —
+ * light base. Content is passed in per page. NOTE: this is standard boilerplate , 
  * have it reviewed before launch and adjust to the business's actual practices.
  */
 export default function LegalPage({

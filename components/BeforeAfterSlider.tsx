@@ -7,7 +7,7 @@ import { site } from "@/site.config";
 
 /**
  * Accessible before/after reveal slider (drag + arrow keys / Home / End).
- * SIGNATURE element — but config-gated: renders nothing unless
+ * SIGNATURE element, but config-gated: renders nothing unless
  * `site.beforeAfter.enabled` is true AND at least one pair has both images.
  * This keeps the site honest until Joe sends real matched before/after photos
  * (same angle). To turn it on: add a pair in site.config.ts and flip `enabled`.
@@ -58,7 +58,7 @@ export default function BeforeAfterSlider() {
     }
   };
 
-  // Off until enabled with a real pair — render nothing.
+  // Off until enabled with a real pair, render nothing.
   if (!beforeAfter.enabled || !pair) return null;
 
   return (
@@ -78,14 +78,14 @@ export default function BeforeAfterSlider() {
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
-          className="relative mx-auto mt-12 aspect-[16/10] w-full max-w-4xl touch-none select-none overflow-hidden rounded-2xl border border-bone/10 sm:aspect-[16/9]"
+          className="relative mx-auto mt-12 aspect-[4/5] w-full max-w-lg touch-none select-none overflow-hidden rounded-2xl border border-bone/10 sm:aspect-[4/3] sm:max-w-2xl"
         >
           {/* Base layer: BEFORE, always full */}
           <Image
             src={pair.before.src}
             alt={pair.before.alt}
             fill
-            sizes="(min-width: 1024px) 900px, 100vw"
+            sizes="(min-width: 640px) 672px, 100vw"
             className="object-cover"
             draggable={false}
           />
@@ -99,7 +99,7 @@ export default function BeforeAfterSlider() {
               src={pair.after.src}
               alt={pair.after.alt}
               fill
-              sizes="(min-width: 1024px) 900px, 100vw"
+              sizes="(min-width: 640px) 672px, 100vw"
               className="object-cover"
               draggable={false}
             />

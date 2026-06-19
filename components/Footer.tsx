@@ -10,7 +10,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink text-bone">
-      {/* Chiseled stone-seam cap — the brand motif. */}
+      {/* Chiseled stone-seam cap, the brand motif. */}
       <div className="stone-seam" />
       <div className="container-page py-16">
         <div className="grid gap-10 lg:grid-cols-4">

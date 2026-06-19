@@ -13,6 +13,7 @@ export default function ContactForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
   const [smsConsent, setSmsConsent] = useState(false); // real checkbox, never auto-true
   const [status, setStatus] = useState<Status>("idle");
@@ -22,16 +23,21 @@ export default function ContactForm() {
     if (status === "submitting") return;
     setStatus("submitting");
 
+    // Fold the address into `message` so the CRM body stays the exact contract.
+    const fullMessage = address.trim()
+      ? `Property address: ${address.trim()}\n\n${message}`
+      : message;
+
     try {
       const res = await fetch(crm.url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Body is EXACTLY these fields — do not add/rename (CRM contract).
+        // Body is EXACTLY these fields, do not add or rename (CRM contract).
         body: JSON.stringify({
           name,
           phone,
           email,
-          message,
+          message: fullMessage,
           smsConsent,
           businessSlug: crm.businessSlug,
         }),
@@ -40,7 +46,7 @@ export default function ContactForm() {
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setStatus("success");
     } catch {
-      // Keep the user's typed input on failure — never wipe it.
+      // Keep the user's typed input on failure, never wipe it.
       setStatus("error");
     }
   }
@@ -130,6 +136,23 @@ export default function ContactForm() {
       </div>
 
       <div className="mt-5">
+        <label htmlFor="address" className={labelClass}>
+          {f.addressLabel}
+        </label>
+        <input
+          id="address"
+          name="address"
+          type="text"
+          required
+          autoComplete="street-address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className={inputClass}
+          placeholder={f.addressPlaceholder}
+        />
+      </div>
+
+      <div className="mt-5">
         <label htmlFor="message" className={labelClass}>
           {f.messageLabel}
         </label>
@@ -144,7 +167,7 @@ export default function ContactForm() {
         />
       </div>
 
-      {/* TCPA consent — real checkbox, default unchecked */}
+      {/* TCPA consent, real checkbox, default unchecked */}
       <div className="mt-5 flex items-start gap-3">
         <input
           id="smsConsent"

@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
         {
           heading: "Information we collect",
           body: [
-            "When you submit our contact form, we collect the details you provide — your name, phone number, optional email, and your message — along with your consent to be contacted by text.",
+            "When you submit our contact form, we collect the details you provide, your name, phone number, optional email, and your message, along with your consent to be contacted by text.",
             "We do not sell your information, and we do not collect more than we need to respond to your request.",
           ],
         },

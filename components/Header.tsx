@@ -74,7 +74,7 @@ export default function Header() {
         <Link
           href="/"
           className={`h-display text-xl sm:text-2xl ${wordmark}`}
-          aria-label={`${site.business.name} — home`}
+          aria-label={`${site.business.name}, home`}
         >
           {site.business.shortName}
           <span className="text-cedar">.</span>
@@ -188,7 +188,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile nav panel — solid evergreen so it's legible over any page top. */}
+      {/* Mobile nav panel, solid evergreen so it's legible over any page top. */}
       {open && (
         <nav
           id="mobile-nav"

@@ -15,7 +15,7 @@ export default function AboutPage() {
       <PageHeader
         eyebrow={site.whyUs.eyebrow}
         title="Family-owned, and proud of it."
-        sub="Over a decade of hardscaping and landscaping across the Blue Water Area — same family, same standards, same name on every job."
+        sub="Over a decade of hardscaping and landscaping across the Blue Water Area, same family, same standards, same name on every job."
       />
       <WhyUs />
       <ServiceArea />

@@ -56,7 +56,7 @@ export default function Hero() {
             )}
           </div>
 
-          {/* Photo — tall finished-project shot with an offset evergreen frame for depth */}
+          {/* Photo, tall finished-project shot with an offset evergreen frame for depth */}
           <div className="relative">
             <div
               aria-hidden="true"

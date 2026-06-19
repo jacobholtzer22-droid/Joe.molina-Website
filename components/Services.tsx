@@ -54,7 +54,7 @@ export default function Services({ compact = false }: { compact?: boolean }) {
         <p className="mt-4 text-lg text-ink/70">{servicesIntro.sub}</p>
       </div>
 
-      {/* Featured service feature block — only on the full /services page. */}
+      {/* Featured service feature block, only on the full /services page. */}
       {!compact && featured && (
         <div className="mt-12 grid items-stretch gap-8 overflow-hidden rounded-2xl border border-evergreen/10 bg-bone lg:grid-cols-2">
           <div className="relative min-h-[20rem] lg:min-h-[26rem]">

@@ -64,7 +64,7 @@ export default function Reviews() {
                     </figcaption>
                   </>
                 ) : (
-                  /* Placeholder — paste a real review in site.config.ts, never invent. */
+                  /* Placeholder, paste a real review in site.config.ts, never invent. */
                   <div className="mt-4 flex flex-1 flex-col justify-center rounded-xl border border-dashed border-bone/25 p-6 text-center">
                     <span className="text-xs font-semibold uppercase tracking-wider text-bone/70">
                       {reviews.placeholderLabel} {i + 1}

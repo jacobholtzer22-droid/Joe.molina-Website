@@ -14,10 +14,10 @@ export default function GalleryPage() {
       <PageHeader
         eyebrow={site.work.eyebrow}
         title="Our finished work."
-        sub="Recent installs and maintained properties across the Blue Water Area. The work is the portfolio — take a look."
+        sub="Recent installs and maintained properties across the Blue Water Area. The work is the portfolio, take a look."
       />
       <Work />
-      {/* Config-gated before/after — renders only when Joe sends real pairs. */}
+      {/* Config-gated before/after, renders only when Joe sends real pairs. */}
       <BeforeAfterSlider />
       <CtaBand />
     </>

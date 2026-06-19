@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import MobileCtaBar from "@/components/MobileCtaBar";
 import "./globals.css";
 
-/* Display: Fraunces — an "old-style" optical serif with real character. Set heavy and
+/* Display: Fraunces, an "old-style" optical serif with real character. Set heavy and
  * tight, it reads sturdy and crafted: a decade-old family company, not a fashion label. */
 const display = Fraunces({
   subsets: ["latin"],
@@ -17,7 +17,7 @@ const display = Fraunces({
   display: "swap",
 });
 
-/* Body: Libre Franklin — a warm American grotesque (Franklin Gothic lineage). Grounded,
+/* Body: Libre Franklin, a warm American grotesque (Franklin Gothic lineage). Grounded,
  * trustworthy, highly legible. Deliberately not Inter / not the other site's Figtree. */
 const body = Libre_Franklin({
   subsets: ["latin"],

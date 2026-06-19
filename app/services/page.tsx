@@ -14,7 +14,7 @@ export default function ServicesPage() {
       <PageHeader
         eyebrow={site.servicesIntro.eyebrow}
         title="Hardscaping, lawn care & landscaping."
-        sub="One family crew for the whole property — from a single paver patio to year-round maintenance. Everything we do across the Blue Water Area."
+        sub="One family crew for the whole property, from a single paver patio to year-round maintenance. Everything we do across the Blue Water Area."
       />
       <Services />
       <ServiceArea />

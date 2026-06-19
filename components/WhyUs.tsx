@@ -15,7 +15,7 @@ export default function WhyUs() {
             image={images[whyUs.imageKey]}
             sizes="(min-width: 1024px) 560px, 100vw"
           />
-          {/* Chiseled stone-seam along the bottom edge — the brand motif. */}
+          {/* Chiseled stone-seam along the bottom edge, the brand motif. */}
           <div className="stone-seam absolute inset-x-0 bottom-0" />
         </div>
 

@@ -12,10 +12,10 @@ export function formatTime(value: string | null): string {
   return `${h}:${m} ${period}`;
 }
 
-/** "Closed" or "7:00 AM – 6:00 PM" for a day's hours. */
+/** "Closed" or "7:00 AM to 6:00 PM" for a day's hours. */
 export function formatDayHours(day: DayHours): string {
   if (day.closed || !day.open || !day.close) return "Closed";
-  return `${formatTime(day.open)} – ${formatTime(day.close)}`;
+  return `${formatTime(day.open)} to ${formatTime(day.close)}`;
 }
 
 export const DAY_ORDER = [
