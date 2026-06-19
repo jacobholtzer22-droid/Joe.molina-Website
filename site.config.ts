@@ -360,15 +360,12 @@ export const site = {
     eyebrow: "Reviews",
     heading: "Trusted by Blue Water Area homeowners.",
     sub: "We let the finished work — and our customers — do the talking.",
-    // Google review links — precise deep links to Joe's exact listing (name + city +
-    // zip). `googleReviewUrl` opens the Google Business panel where the "Write a review"
-    // button lives; `googleProfileUrl` opens the listing's reviews in Maps. For a true
-    // one-tap write-review link, paste the GBP short link (g.page/r/<id>/review) here —
-    // it isn't programmatically extractable (Google Maps blocks scraping).
+    // Google review links for Joe's exact listing (CID 0x88259d9f3408553b:0xb54996329c180fe2).
+    // `googleReviewUrl` = the one-tap "write a review" deep link; `googleProfileUrl` opens
+    // the listing in Maps (reviews shown). cid (decimal) = 13063137338276188130.
     googleReviewUrl:
-      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI+48060",
-    googleProfileUrl:
-      "https://www.google.com/maps/search/?api=1&query=J.+Molina+Landscaping+Port+Huron+MI+48060",
+      "https://www.google.com/search?q=J.+Molina+Landscaping+Port+Huron+MI+48060#lrd=0x88259d9f3408553b:0xb54996329c180fe2,3,,,,",
+    googleProfileUrl: "https://www.google.com/maps?cid=13063137338276188130",
     reviewCtaLabel: "Leave us a Google review",
     readReviewsLabel: "Read our reviews",
     placeholderLabel: "Review coming soon",

@@ -65,15 +65,14 @@ npm run build    # production build
 ## Open TODOs before launch
 
 - [ ] `NEXT_PUBLIC_BUSINESS_SLUG` — paste the real Neon `Business.slug` (Friday).
-- [ ] Reviews: the one-click `reviews.googleReviewUrl` currently points at a Google search
-      for the business — replace it with Joe's exact "leave a review" short link from his
-      Google Business Profile (looks like `https://g.page/r/<id>/review`). Optionally swap the
-      imported HomeAdvisor/Yelp review text for verbatim Google quotes + first names.
 - [ ] Confirm final domain in `seo.url`.
+- [ ] (Optional) Swap the imported HomeAdvisor/Yelp review text for verbatim Google quotes + first names.
 - [ ] (Optional) Turn on the before/after slider once Joe sends matched pairs — see `PHOTOS.md`.
 
 Confirmed from public listings: phone `(810) 294-9417`, hours Mon–Sat 8–6 / Sun closed,
-5.0 rating, and 4 real reviews (HomeAdvisor/Yelp) are imported.
+5.0 rating, and 4 real reviews (HomeAdvisor/Yelp) are imported. The "Leave us a Google
+review" button uses Joe's exact one-tap write-review deep link (Google listing CID
+0x88259d9f3408553b:0xb54996329c180fe2).
 
 ## Cloning to another business
 
