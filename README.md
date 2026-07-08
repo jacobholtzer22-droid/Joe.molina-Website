@@ -42,12 +42,13 @@ body of **exactly**:
 { "name": "", "phone": "", "email": "", "message": "", "smsConsent": false, "businessSlug": "" }
 ```
 
-Configured via two public env vars (see `.env.local.example`):
+The CRM URL is a public env var (see `.env.local.example`):
 
 ```
 NEXT_PUBLIC_CRM_URL=https://www.alignandacquire.com/api/contact
-NEXT_PUBLIC_BUSINESS_SLUG=REPLACE_ME_FRIDAY   # ← paste the real Neon Business.slug
 ```
+
+The **business slug** is set directly in `site.config.ts` (`crm.businessSlug`), not an env var.
 
 `smsConsent` is a real, default-unchecked checkbox with TCPA-compliant language.
 On success the form is replaced with a confirmation; on failure the user keeps their
@@ -64,7 +65,7 @@ npm run build    # production build
 
 ## Open TODOs before launch
 
-- [ ] `NEXT_PUBLIC_BUSINESS_SLUG` — paste the real Neon `Business.slug` (Friday).
+- [x] Business slug set directly in `site.config.ts` (`crm.businessSlug`).
 - [ ] Confirm final domain in `seo.url`.
 - [ ] (Optional) Swap the imported HomeAdvisor/Yelp review text for verbatim Google quotes + first names.
 - [ ] (Optional) Turn on the before/after slider once Joe sends matched pairs — see `PHOTOS.md`.
