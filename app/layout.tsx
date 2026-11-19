@@ -44,6 +44,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <head>
+        <script defer src="https://www.alignandacquire.com/t/s/j-molina-landscaping-1783524591862.js"></script>
+      </head>
       <body className="bg-limestone font-body text-ink antialiased">
         <a
           href="#main"
